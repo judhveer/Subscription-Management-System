@@ -1,0 +1,123 @@
+Testing Workflow
+
+
+Setup:
+    npm install
+    nodemon server.js
+
+
+Test Order:
+
+    Register Seller → Login Seller → Create Service → Add Plan →
+    Register Buyer → Login Buyer → Create Subscription → Make Payment →
+    Check Reports → View Invoice
+
+Note: -->>    In PostMan first tab is for Seller and second for Buyer
+
+1. Authentication Routes
+   -> Register User (Seller/Buyer)
+   >> Login User (Seller/Buyer)
+
+        POST http://localhost:3000/api/auth/register
+        {
+        "username": "gym_seller",
+        "email": "seller@test.com",
+        "password": "seller123",
+        "role": "seller"
+        }
+
+        POST http://localhost:3000/api/auth/register
+        {
+        "username": "gym_buyer",
+        "email": "buyer@test.com",
+        "password": "buyer123",
+        "role": "buyer"
+        }
+    
+        POST http://localhost:3000/api/auth/login
+        {
+        "email": "seller@test.com",
+        "password": "seller123"
+        }
+        {
+        "email": "buyer@test.com",
+        "password": "buyer123"
+        }
+
+2.  Service Management (Seller Only)
+    -> Create Service
+        POST http://localhost:3000/api/services
+        Authorization: Bearer <SELLER_TOKEN>        
+        {
+            "name": "Premium Gym",
+            "description": "24/7 access",
+            "category": "gym"
+        }
+
+    -> Add Service Plan
+        POST http://localhost:3000/api/services/1/plans
+        Authorization: Bearer <SELLER_TOKEN>
+        {
+            "planType": "monthly",
+            "price": 100,
+            "duration": 30
+        }
+
+3. Subscription Management (Buyer Only)
+    -> Create Subscription
+    POST http://localhost:3000/api/subscriptions
+    Authorization: Bearer <BUYER_TOKEN>
+    {
+        "planId": 1,
+        "startDate": "2024-01-01"
+    }
+
+4. Payment Handling (Buyer Only)
+    -> Make Payment
+    POST http://localhost:3000/api/payments
+    Authorization: Bearer <BUYER_TOKEN>
+    {
+        "subscriptionId": 1,
+        "amount": 100,
+        "paymentMethod": "credit_card"
+    }
+    -> Get Payment History
+    GET http://localhost:3000/api/payments
+    Authorization: Bearer <BUYER_TOKEN>
+
+5. Reports (Seller Only)
+    -> Active Members Report
+    GET http://localhost:3000/api/reports/active-members
+    Authorization: Bearer <SELLER_TOKEN>
+
+    -> Expiring Subscriptions
+    GET http://localhost:3000/api/reports/expiring-soon
+    Authorization: Bearer <SELLER_TOKEN>
+
+    -> Revenue Report
+    GET http://localhost:3000/api/reports/revenue
+    Authorization: Bearer <SELLER_TOKEN>
+
+6. Public Routes
+    -> View Invoice PDF
+    GET http://localhost:3000/public/invoices/INV-fileName.pdf
+
+
+7. Test Endpoints
+    1. Get Active Subscriptions (Buyer) 
+        GET http://localhost:3000/api/subscriptions?status=active
+        Headers: Authorization: Bearer <BUYER_TOKEN>
+    
+    2. Filter by Date Range
+    GET http://localhost:3000/api/subscriptions?startDate=2024-01-01&endDate=2024-01-31
+    Headers: Authorization: Bearer <BUYER_TOKEN>
+
+
+Expected Database State After Testing
+Table	        Record Count
+Users	        2 (1 seller, 1 buyer)
+Services	    1
+ServicePlans	1
+Subscriptions	1
+Payments	    1
+Invoices	    1
