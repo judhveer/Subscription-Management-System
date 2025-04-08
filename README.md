@@ -80,5 +80,29 @@ This system manages subscriptions for Gym and Tuition services. Each member can 
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/
-   cd 
+   git clone https://github.com/judhveer/Subscription-Management-System.git
+   cd Subscription-Management-System.git
+
+---
+
+2. Install dependencies:
+- npm install
+
+3. Create .env:
+   -  JWT_SECRET=secret
+   -  PORT=3000
+
+4. Start the server:
+  -  npm start
+
+## 📧 Contact
+For questions or feedback, feel free to contact judhveer@proton.me
+
+
+
+
+
+
+
+
+
